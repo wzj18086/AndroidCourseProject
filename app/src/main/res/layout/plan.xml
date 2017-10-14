@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal">
+        <CheckBox
+            android:id="@+id/Monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一"/>
+        <CheckBox
+            android:id="@+id/Tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="二"/>
+        <CheckBox
+            android:id="@+id/Wednsday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="三"/>
+        <CheckBox
+            android:id="@+id/Thusday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="四"/>
+        <CheckBox
+            android:id="@+id/Friday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="五"/>
+        <CheckBox
+            android:id="@+id/Saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="六"/>
+        <CheckBox
+            android:id="@+id/Sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="日"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_weight="6"
+        android:layout_gravity="center"
+        android:id="@+id/planRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="确定" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addNewPlan"
+            android:layout_marginLeft="250dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</LinearLayout>
+

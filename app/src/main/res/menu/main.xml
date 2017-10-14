@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="添加计划"
+        android:id="@+id/addPlan"/>
+    <item
+        android:title="修改计划"
+        android:id="@+id/changePlan">
+        <menu>
+            <item
+                android:title="星期一"
+                android:id="@+id/Mon"/>
+            <item
+                android:title="星期二"
+                android:id="@+id/Tue"/>
+            <item
+                android:title="星期三"
+                android:id="@+id/Wed"/>
+            <item
+                android:title="星期四"
+                android:id="@+id/Thu"/>
+            <item
+                android:title="星期五"
+                android:id="@+id/Fri"/>
+            <item
+                android:title="星期六"
+                android:id="@+id/Sat"/>
+            <item
+                android:title="星期日"
+                android:id="@+id/Sun"/>
+
+        </menu>
+    </item>
+    <item
+        android:title="退出"
+        android:id="@+id/exit"/>
+</menu>
