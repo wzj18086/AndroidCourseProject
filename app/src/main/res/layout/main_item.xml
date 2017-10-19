@@ -4,15 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <Button
+        android:id="@+id/main_time"
         android:layout_weight="1"
-        android:id="@+id/timeSelect"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content">
-
-    </Button>
-    <TextView
-        android:layout_weight="3"
-        android:id="@+id/planContext"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/isFinish"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

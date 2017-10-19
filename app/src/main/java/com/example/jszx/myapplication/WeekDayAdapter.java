@@ -12,64 +12,58 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by jszx on 2017/10/13.
+ * Created by 王志杰 on 2017/10/14.
  */
 
-public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
-    private List<Plan> mplanList;
-    private Calendar calendar;
-
-    static class ViewHolder extends RecyclerView.ViewHolder
-    {
-        Button timeSelect;
-        TextView planContext;
+public class WeekDayAdapter extends RecyclerView.Adapter<WeekDayAdapter.ViewHolder> implements View.OnLongClickListener{
+    private List<Plan> WeekDayPlanList;
+    private MyonLongClickListener myonLongClickListener;
+    Calendar calendar;
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        Button weekDayTimeSelect;
+        TextView weekDayPlanContent;
         public ViewHolder(View view)
         {
             super(view);
-            timeSelect=(Button) view.findViewById(R.id.timeSelect);
-            planContext=(TextView)view.findViewById(R.id.planContext);
+            weekDayTimeSelect=(Button)view.findViewById(R.id.weekday_timeSelect);
+            weekDayPlanContent=(TextView)view.findViewById(R.id.weekday_planContext);
         }
     }
-
-    public PlanAdapter(List<Plan> planList)
+    public WeekDayAdapter(List<Plan> planList)
     {
-        mplanList=planList;
+        this.WeekDayPlanList=planList;
     }
-    @Override
-    public PlanAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item,parent,false);
-        final ViewHolder viewHolder=new ViewHolder(view);
 
-        viewHolder.timeSelect.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.week_day_item_plan,parent,false);
+        final ViewHolder viewHolder=new ViewHolder(view);
+        viewHolder.weekDayTimeSelect.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                calendar=Calendar.getInstance();
+            public void onClick(View view) {
+                calendar= Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);
                 int day=calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog=new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog=new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
                         calendar.set(Calendar.HOUR,hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-                        viewHolder.timeSelect.setText(String_to_time.Translate(hourOfDay)+":"+String_to_time.Translate(minute));
+                        viewHolder.weekDayTimeSelect.setText(String_to_time.Translate(hourOfDay)+":"+String_to_time.Translate(minute));
                         //mplanList.get(viewHolder.getAdapterPosition()).setDaedlineTime(new Date());
                     }
                 },hour,day,true);
                 timePickerDialog.show();
             }
         });
-
-        viewHolder.planContext.setOnClickListener(new View.OnClickListener() {
+        viewHolder.weekDayPlanContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 View view=LayoutInflater.from(v.getContext()).inflate(R.layout.edit_dialog,null);
@@ -81,8 +75,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 String DialogText=editDialog.getText().toString();
-                                viewHolder.planContext.setText(DialogText);
-                                mplanList.get(viewHolder.getAdapterPosition()).setPlanContext(DialogText);
+                                viewHolder.weekDayPlanContent.setText(DialogText);
+                                WeekDayPlanList.get(viewHolder.getAdapterPosition()).setPlanContext(DialogText);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -99,33 +93,44 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Plan plan=mplanList.get(position);
-        //holder.timeSelect.setText(plan.getPlanContext());
-        holder.planContext.setText(plan.getPlanContext());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
+        Plan plan=WeekDayPlanList.get(position);
+        holder.weekDayTimeSelect.setText(plan.getDaedlineTime());
+        holder.weekDayPlanContent.setText(plan.getPlanContext());
     }
 
     @Override
     public int getItemCount() {
-        return mplanList.size();
+        return WeekDayPlanList.size();
     }
     public void add(Plan plan,int position)
     {
-        if (mplanList==null)
+        if (WeekDayPlanList==null)
         {
-            mplanList=new ArrayList<>();
+            WeekDayPlanList=new ArrayList<>();
         }
-        mplanList.add(plan);
+        WeekDayPlanList.add(plan);
         notifyItemInserted(position);
     }
-
-    public void removeItem(int pos){
-        mplanList.remove(pos);
+    public void removeItem(int pos) {
+        WeekDayPlanList.remove(pos);
         notifyItemRemoved(pos);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if(myonLongClickListener!=null)
+        {
+            myonLongClickListener.onItemLongClickListener(view,view.getId());
+        }
+        return true;
+    }
+
+    public static interface MyonLongClickListener
+    {
+        public void onItemLongClickListener(View view,int position);
+    }
+    public void setMyonLongClickListener(MyonLongClickListener listener)
+    {
+        this.myonLongClickListener=listener;
     }
     }

@@ -5,14 +5,13 @@
     android:layout_height="wrap_content">
     <Button
         android:layout_weight="1"
-        android:id="@+id/timeSelect"
+        android:id="@+id/weekday_timeSelect"
         android:layout_width="0dp"
         android:layout_height="wrap_content">
-
     </Button>
     <TextView
         android:layout_weight="3"
-        android:id="@+id/planContext"
+        android:id="@+id/weekday_planContext"
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 </LinearLayout>
