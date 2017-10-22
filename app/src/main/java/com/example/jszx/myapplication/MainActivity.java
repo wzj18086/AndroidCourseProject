@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,15 +37,17 @@ public class MainActivity extends AppCompatActivity {
     private List<Plan> mainPlanList;
     private MainAdapter mainAdapter;
     private DrawerLayout drawerLayout;
+    private Calendar calendar;
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Calendar calendar=Calendar.getInstance();
+        calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-        final String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+        String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
 
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Calendar calendar=Calendar.getInstance();
+                String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+                Log.d("MainActivity","传入的星期"+day_of_week);
                 refreshList(day_of_week);
             }
         });
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("MainActivity",day_of_week);
         mainPlanList= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.main_recyclerview);
+        recyclerView=(RecyclerView)findViewById(R.id.main_recyclerview);
         mainAdapter=new MainAdapter(mainPlanList);
         final LinearLayoutManager layoutManager=new LinearLayoutManager(this);
 
@@ -230,9 +236,13 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mainPlanList= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
+                        List<Plan> mainPlanList_refrsh= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
+                        mainPlanList.clear();
+                        mainPlanList.addAll(mainPlanList_refrsh);
+                        Log.d("MainActivity","mainList"+mainPlanList.get(0).getWeekday()+""+" size"+mainPlanList.size());
                         mainAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
+                        //mainAdapter.notifyItemRemoved(mainAdapter.getItemCount());
                     }
                 });
             }
