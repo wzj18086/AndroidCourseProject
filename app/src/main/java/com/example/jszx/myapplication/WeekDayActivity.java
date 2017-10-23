@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -113,7 +114,7 @@ public class WeekDayActivity extends AppCompatActivity {
                 DataSupport.deleteAll(Plan.class,"weekday=?",day_of_week);
                 for (int i = 0; i < weekDayAdapter.getItemCount(); i++) {
                     View view1 = layoutManager.findViewByPosition(i);
-                    LinearLayout layout = (LinearLayout) view1;
+                    CardView layout = (CardView) view1;
                     TextView textView = (TextView) layout.findViewById(R.id.weekday_planContext);
                     Button button = (Button) layout.findViewById(R.id.weekday_timeSelect);
                     final String buttton_context = button.getText().toString();

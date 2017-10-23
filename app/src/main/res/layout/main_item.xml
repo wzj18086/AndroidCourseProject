@@ -15,17 +15,24 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <Button
+        <TextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
             android:id="@+id/main_time"
             android:layout_weight="1"
             android:layout_width="0dp"
+            android:textSize="30sp"
             android:layout_height="wrap_content" />
         <TextView
+            android:layout_gravity="center_vertical"
+            android:textSize="20sp"
             android:id="@+id/content"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
-        <TextView
+        <Switch
+            android:layout_gravity="center_vertical"
             android:id="@+id/isFinish"
             android:layout_weight="1"
             android:layout_width="0dp"

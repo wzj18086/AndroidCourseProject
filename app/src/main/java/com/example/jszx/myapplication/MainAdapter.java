@@ -27,14 +27,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     private List<Plan> mainPlanList;
     static class ViewHolder extends RecyclerView.ViewHolder
     {
-        Button time_select;
+        TextView time_select;
         TextView content;
         TextView isFinish;
         public ViewHolder(View view)
         {
             super(view);
 
-            time_select=(Button)view.findViewById(R.id.main_time);
+            time_select=(TextView) view.findViewById(R.id.main_time);
             content=(TextView) view.findViewById(R.id.content);
             isFinish=(TextView)view.findViewById(R.id.isFinish);
         }

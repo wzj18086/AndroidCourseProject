@@ -168,58 +168,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main,menu);
+        //getMenuInflater().inflate(R.menu.main,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.addPlan:
-                Intent intent=new Intent(this,planActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.Mon:
-                Intent intent2=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent2.putExtra("day_of_week","2");
-                startActivity(intent2);
-                break;
-            case R.id.Tue:
-                Intent intent3=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent3.putExtra("day_of_week","3");
-                startActivity(intent3);
-                break;
-            case R.id.Wed:
-                Intent intent4=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent4.putExtra("day_of_week","4");
-                startActivity(intent4);
-                break;
-            case R.id.Thu:
-                Intent intent5=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent5.putExtra("day_of_week","5");
-                startActivity(intent5);
-                break;
-            case R.id.Fri:
-                Intent intent6=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent6.putExtra("day_of_week","6");
-                startActivity(intent6);
-                break;
-            case R.id.Sat:
-                Intent intent7=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent7.putExtra("day_of_week","7");
-                startActivity(intent7);
-                break;
-            case R.id.Sun:
-                Intent intent1=new Intent(MainActivity.this,WeekDayActivity.class);
-                intent1.putExtra("day_of_week","1");
-                startActivity(intent1);
-                break;
-
-        }
         return true;
     }
     public void refreshList(final String day_of_week)
@@ -239,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         List<Plan> mainPlanList_refrsh= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
                         mainPlanList.clear();
                         mainPlanList.addAll(mainPlanList_refrsh);
-                        Log.d("MainActivity","mainList"+mainPlanList.get(0).getWeekday()+""+" size"+mainPlanList.size());
+//                        Log.d("MainActivity","mainList"+mainPlanList.get(0).getWeekday()+""+" size"+mainPlanList.size());
                         mainAdapter.notifyDataSetChanged();
                         swipeRefreshLayout.setRefreshing(false);
                         //mainAdapter.notifyItemRemoved(mainAdapter.getItemCount());

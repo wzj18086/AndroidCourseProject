@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -91,7 +92,7 @@ public class planActivity extends AppCompatActivity {
             public void onClick(View view) {
                 for (int i = 0; i < planAdapter.getItemCount(); i++) {
                     View view1 = layoutManager.findViewByPosition(i);
-                    LinearLayout layout = (LinearLayout) view1;
+                    CardView layout = (CardView) view1;
                     TextView textView = (TextView) layout.findViewById(R.id.planContext);
                     Button button = (Button) layout.findViewById(R.id.timeSelect);
                     final String buttton_context=button.getText().toString();
