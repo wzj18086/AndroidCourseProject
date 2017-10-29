@@ -14,40 +14,69 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.litepal.crud.DataSupport;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WeekDayActivity extends BaseActivity {
-    private List<Plan> weekdayPlanList;
-    private WeekDayAdapter weekDayAdapter;
+public class EventActivity extends BaseActivity {
+    List<Plan> events=new ArrayList<>();
+    EventAdapter eventAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.week_day_plan);
+        setContentView(R.layout.activity_event);
+        events=DataSupport.where("planType=?","1").find(Plan.class);
+        eventAdapter=new EventAdapter(events);
 
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_event);
         setSupportActionBar(toolbar);
+
         ActionBar actionBar=getSupportActionBar();
         if(actionBar!=null)
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Intent intent=getIntent();
-        final String day_of_week=intent.getStringExtra("day_of_week");
-        weekdayPlanList= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
-        Log.d("WeekDayActivity",day_of_week);
-        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.planRecyclerView_weekday);
-        weekDayAdapter=new WeekDayAdapter(weekdayPlanList);
-        recyclerView.setAdapter(weekDayAdapter);
+        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.eventRecyclerView);
         final LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        recyclerView.setAdapter(eventAdapter);
         recyclerView.setLayoutManager(layoutManager);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.addNewEvent);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventAdapter.add(new Plan(), eventAdapter.getItemCount());
+            }
+        });
+        Button ensure_button=(Button) findViewById(R.id.ensure_event);
 
+        ensure_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DataSupport.deleteAll(Plan.class,"planType=?","1");
+                for (int i = 0; i <eventAdapter.getItemCount(); i++) {
+                    View view1 = layoutManager.findViewByPosition(i);
+                    CardView layout = (CardView) view1;
+                    TextView textView = (TextView) layout.findViewById(R.id.eventContext);
+                    Button button = (Button) layout.findViewById(R.id.event_timeSelect);
+                    final String buttton_context = button.getText().toString();
+                    final String textView_context = textView.getText().toString();
+                    Plan event=new Plan();
+                    event.setPlanContext(textView_context);
+                    event.setDaedlineTime(buttton_context);
+                    event.setPlanType("1");
+                    event.save();
+                }
+                Intent intent=new Intent(EventActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+
+        });
         new ItemTouchHelper(new ItemTouchHelper.Callback() {
             private RecyclerView.ViewHolder vh;
 
@@ -81,7 +110,7 @@ public class WeekDayActivity extends BaseActivity {
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
                 // 移动时更改列表中对应的位置并返回true
-                Collections.swap(weekdayPlanList, viewHolder.getAdapterPosition(), target
+                Collections.swap(events, viewHolder.getAdapterPosition(), target
                         .getAdapterPosition());
                 return true;
             }
@@ -94,53 +123,18 @@ public class WeekDayActivity extends BaseActivity {
                     fromPos, RecyclerView.ViewHolder target, int toPos, int x, int y) {
                 super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
                 // 移动完成后刷新列表
-                weekDayAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target
+                eventAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target
                         .getAdapterPosition());
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // 将数据集中的数据移除
-                weekdayPlanList.remove(viewHolder.getAdapterPosition());
+                events.remove(viewHolder.getAdapterPosition());
                 // 刷新列表
-                weekDayAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                eventAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
         }).attachToRecyclerView(recyclerView);
-
-        Button ensure_button=(Button) findViewById(R.id.ensure_weekday);
-
-        ensure_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DataSupport.deleteAll(Plan.class,"weekday=?",day_of_week);
-                for (int i = 0; i < weekDayAdapter.getItemCount(); i++) {
-                    View view1 = layoutManager.findViewByPosition(i);
-                    CardView layout = (CardView) view1;
-                    TextView textView = (TextView) layout.findViewById(R.id.weekday_planContext);
-                    Button button = (Button) layout.findViewById(R.id.weekday_timeSelect);
-                    final String buttton_context = button.getText().toString();
-                    final String textView_context = textView.getText().toString();
-                    Log.d("WeekDayActivity",buttton_context);
-                    Plan plan=new Plan();
-                    plan.setWeekday(day_of_week);
-                    Log.d("WeekDayActivity",day_of_week);
-                    plan.setPlanContext(textView_context);
-                    plan.setDaedlineTime(buttton_context);
-                    plan.setPlanType("0");
-                    plan.save();
-                }
-                Intent intent=new Intent(WeekDayActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-
-        });
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.addNewPlan_weekday);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               weekDayAdapter.add(new Plan(), weekDayAdapter.getItemCount());
-            }
-        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

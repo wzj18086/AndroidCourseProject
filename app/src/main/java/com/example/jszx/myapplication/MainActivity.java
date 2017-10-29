@@ -10,44 +10,47 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
+import android.widget.Toast;
 import org.litepal.crud.DataSupport;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private List<Plan> mainPlanList;
     private MainAdapter mainAdapter;
     private DrawerLayout drawerLayout;
     private Calendar calendar;
-    private RecyclerView recyclerView;
+    private boolean isExit=false;
+    private boolean isFirst;
+    private List<Plan> eventList;
+    private String TAG="MainActivity";
+    private String month;
+    private String day_of_month;
     private SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
         String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+
+        day_of_month=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        month=String.valueOf(calendar.get(Calendar.MONTH)+1);
+        isFirst=false;
 
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,44 +62,31 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 Calendar calendar=Calendar.getInstance();
                 String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
-                Log.d("MainActivity","传入的星期"+day_of_week);
                 refreshList(day_of_week);
             }
         });
 
 
-        Log.d("MainActivity",day_of_week);
-        mainPlanList= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
-        recyclerView=(RecyclerView)findViewById(R.id.main_recyclerview);
+        mainPlanList= DataSupport.where("weekday=? ",day_of_week).find(Plan.class);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_recyclerview);
+        if(mainPlanList.size()!=0)
+        {
+            mainPlanList.get(0).setPosition(1);
+        }
+
         mainAdapter=new MainAdapter(mainPlanList);
         final LinearLayoutManager layoutManager=new LinearLayoutManager(this);
 
         recyclerView.setAdapter(mainAdapter);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setAutoMeasureEnabled(true);
-        for(int i=0;i<mainPlanList.size();i++)
-        {
-            String time=mainPlanList.get(i).getDaedlineTime();
-            Log.d("MainActivity",time);
+        int i1=mainAdapter.getItemCount();
+        eventList=DataSupport.where("planType=?","1").find(Plan.class);
 
-            int hour=Integer.parseInt(time.split(":")[0]);
-            int minute=Integer.parseInt(time.split(":")[1]);
-            Calendar calendar1=Calendar.getInstance();
-            calendar1.set(Calendar.HOUR_OF_DAY,hour);
-            calendar1.set(Calendar.MINUTE,minute);
-            calendar1.set(Calendar.SECOND,0);
-            calendar1.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-            if(calendar1.after(calendar)) {
-                Intent intent = new Intent(this, AlarmReciever.class);
-                intent.putExtra("day_of_week", day_of_week);
-                intent.putExtra("plan_item", i);
-                intent.setAction("ALARM_ACTION" + calendar1.getTimeInMillis());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar1.getTimeInMillis(), pendingIntent);
-            }
+        mainPlanList=addEvent(eventList,mainPlanList);
+        mainAdapter.notifyDataSetChanged();
+        setAlarm(mainPlanList);
 
-        }
 
         drawerLayout=(DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBar actionBar=getSupportActionBar();
@@ -107,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         NavigationView navigationView=(NavigationView)findViewById(R.id.navigation_view);
-        //navigationView.setCheckedItem(R.id.main_inferance);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -119,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.addPlan:
                         Intent intent=new Intent(MainActivity.this,planActivity.class);
                         startActivity(intent);
+                        break;
+                    case R.id.addEvent:
+                        Intent intent_event=new Intent(MainActivity.this,EventActivity.class);
+                        startActivity(intent_event);
                         break;
                     case R.id.Mon:
                         Intent intent2=new Intent(MainActivity.this,WeekDayActivity.class);
@@ -163,12 +157,31 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK)
+        {
+            if(!isExit) {
+                Toast.makeText(this, "再按一次返回键退出", Toast.LENGTH_SHORT).show();
+                isExit=true;
+            }else {
+                ActivityController.finishAll();
+            }
+        }
         return true;
     }
 
@@ -190,16 +203,76 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        boolean isFirst=false;
+                        Calendar calendar2=Calendar.getInstance();
+                        day_of_month=String.valueOf(calendar2.get(Calendar.DAY_OF_MONTH));
+                        month=String.valueOf(calendar2.get(Calendar.MONTH)+1);
                         List<Plan> mainPlanList_refrsh= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
+                        if(mainPlanList_refrsh.size()!=0)
+                        {
+                            mainPlanList_refrsh.get(0).setPosition(1);
+                        }
+                        mainPlanList_refrsh=addEvent(eventList,mainPlanList_refrsh);
                         mainPlanList.clear();
                         mainPlanList.addAll(mainPlanList_refrsh);
-//                        Log.d("MainActivity","mainList"+mainPlanList.get(0).getWeekday()+""+" size"+mainPlanList.size());
                         mainAdapter.notifyDataSetChanged();
+                        setAlarm(mainPlanList);
                         swipeRefreshLayout.setRefreshing(false);
-                        //mainAdapter.notifyItemRemoved(mainAdapter.getItemCount());
                     }
                 });
             }
         }).start();
+    }
+
+    private void setAlarm(List<Plan> mainPlanList)
+    {
+        for(int i=0;i<mainPlanList.size();i++)
+        {
+            String time=mainPlanList.get(i).getDaedlineTime();
+            int hour;
+            int minute;
+            Calendar calendar1=Calendar.getInstance();
+            if(mainPlanList.get(i).getPlanType().equals("0")) {
+                hour = Integer.parseInt(time.split(":")[0]);
+                minute = Integer.parseInt(time.split(":")[1]);
+            }else {
+                hour=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[0]);
+                minute=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[1]);
+            }
+            calendar1.set(Calendar.HOUR_OF_DAY,hour);
+            calendar1.set(Calendar.MINUTE,minute);
+            calendar1.set(Calendar.SECOND,0);
+            calendar1.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+            if(calendar1.after(calendar)) {
+                Intent intent = new Intent(this, AlarmReciever.class);
+                intent.putExtra("item",i);
+                intent.putExtra("Type",mainPlanList.get(i).getPlanType());
+                intent.putExtra("content", mainPlanList.get(i).getPlanContext());
+                intent.setAction("ALARM_ACTION" + calendar1.getTimeInMillis());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar1.getTimeInMillis(), pendingIntent);
+            }
+        }
+    }
+    private List<Plan> addEvent(List<Plan> eventList, List<Plan> mainPlanList)
+    {
+        for (int temp=0;temp<eventList.size();temp++)
+        {
+            Plan event=eventList.get(temp);
+            if (event.getDaedlineTime().split("-")[1].equals(month) && event.getDaedlineTime().split("-")[2].split(" ")[0].equals(day_of_month))
+            {
+                if(!isFirst)
+                {
+                    event.setPosition(1);
+                    isFirst=true;
+                }
+                mainPlanList.add(event);
+                //mainAdapter.notifyItemInserted(i1);
+                //i1++;
+            }
+
+        }
+        return mainPlanList;
     }
 }

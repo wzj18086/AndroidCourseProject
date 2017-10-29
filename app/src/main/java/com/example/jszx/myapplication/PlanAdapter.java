@@ -74,6 +74,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             public void onClick(View v) {
                 View view=LayoutInflater.from(v.getContext()).inflate(R.layout.edit_dialog,null);
                 final EditText editDialog=(EditText)view.findViewById(R.id.edit_dialog);
+                editDialog.setText(mplanList.get(viewHolder.getAdapterPosition()).getPlanContext());
+                editDialog.setSelection(editDialog.getText().length());
                 AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
                 builder.setTitle("Type your plan")
                         .setView(view)

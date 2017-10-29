@@ -30,10 +30,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         TextView time_select;
         TextView content;
         TextView isFinish;
+        TextView headerView;
         public ViewHolder(View view)
         {
             super(view);
-
+            headerView=(TextView)view.findViewById(R.id.header_view);
             time_select=(TextView) view.findViewById(R.id.main_time);
             content=(TextView) view.findViewById(R.id.content);
             isFinish=(TextView)view.findViewById(R.id.isFinish);
@@ -55,8 +56,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Plan plan=mainPlanList.get(position);
-        holder.time_select.setText(plan.getDaedlineTime());
+        if(plan.getPosition()!=0 && plan.getPlanType().equals("0"))
+        {
+            holder.headerView.setVisibility(View.VISIBLE);
+            holder.headerView.setText("计划");
+
+        }else if (plan.getPosition()!=0 && plan.getPlanType().equals("1"))
+        {
+            holder.headerView.setVisibility(View.VISIBLE);
+            holder.headerView.setText("备忘");
+        }else
+            holder.headerView.setVisibility(View.GONE);
+        if(plan.getPlanType().equals("0"))
+        {
+            holder.time_select.setText(plan.getDaedlineTime());
+        }else
+        {
+            holder.time_select.setText(plan.getDaedlineTime().split("-")[2].split(" ")[1].split(":")[0]+":"+plan.getDaedlineTime().split("-")[2].split(" ")[1].split(":")[1]);
+        }
+
         holder.content.setText(plan.getPlanContext());
+
     }
 
     @Override

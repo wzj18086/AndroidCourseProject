@@ -4,6 +4,9 @@
         android:title="添加计划"
         android:id="@+id/addPlan"/>
     <item
+        android:title="添加备忘"
+        android:id="@+id/addEvent"/>
+    <item
         android:title="修改计划"
         android:id="@+id/changePlan">
         <menu>

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class planActivity extends AppCompatActivity {
+public class planActivity extends BaseActivity {
     private List<Plan> mplanList = new ArrayList<>();
     private PlanAdapter planAdapter;
     private CheckBox Monday;
@@ -103,6 +103,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("2");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
 
@@ -112,6 +113,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("3");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
 
@@ -121,6 +123,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("4");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
 
@@ -131,6 +134,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("5");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
 
@@ -140,6 +144,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("6");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
                     if (Saturday.isChecked())
@@ -148,6 +153,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("7");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
                     if (Sunday.isChecked())
@@ -156,6 +162,7 @@ public class planActivity extends AppCompatActivity {
                         plan.setWeekday("1");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
+                        plan.setPlanType("0");
                         plan.save();
                     }
                 }

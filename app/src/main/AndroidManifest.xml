@@ -17,18 +17,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".planActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".WeekDayActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".planActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".WeekDayActivity"
+            android:launchMode="singleTask" />
 
         <receiver
             android:name=".AlarmReciever"
             android:enabled="true"
-            android:process=":remote"
-            android:exported="true">
+            android:exported="true"
+            android:process=":remote" />
 
-        </receiver>
+        <activity android:name=".EventActivity"
+            android:launchMode="singleTask"/>
+
     </application>
 
 </manifest>

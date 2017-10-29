@@ -10,19 +10,38 @@ import java.util.Date;
  */
 
 public class Plan extends DataSupport{
-    int id;
+
+    private int id;
+    private String daedlineTime;
+    private String planContext;
+    private String Weekday;
+    private String planType;
+    private int position;
 
     public int getId() {
         return id;
     }
 
+
     public void setId(int id) {
         this.id = id;
     }
 
-    private String daedlineTime;
-    private String planContext;
-    private String Weekday;
+    public int getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public String getPlanType() {
+        return planType;
+    }
+
+    public void setPlanType(String planType) {
+        this.planType = planType;
+    }
 
     public String getWeekday() {
         return Weekday;
