@@ -37,7 +37,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             headerView=(TextView)view.findViewById(R.id.header_view);
             time_select=(TextView) view.findViewById(R.id.main_time);
             content=(TextView) view.findViewById(R.id.content);
-            isFinish=(TextView)view.findViewById(R.id.isFinish);
+            //isFinish=(TextView)view.findViewById(R.id.isFinish);
         }
     }
     public MainAdapter(List<Plan> planList)

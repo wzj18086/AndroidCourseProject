@@ -127,6 +127,7 @@ public class WeekDayActivity extends BaseActivity {
                     plan.setPlanContext(textView_context);
                     plan.setDaedlineTime(buttton_context);
                     plan.setPlanType("0");
+                    plan.setFinished("0");
                     plan.save();
                 }
                 Intent intent=new Intent(WeekDayActivity.this,MainActivity.class);

@@ -18,6 +18,16 @@ public class Plan extends DataSupport{
     private String planType;
     private int position;
 
+    public String isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(String finished) {
+        isFinished = finished;
+    }
+
+    private String isFinished;
+
     public int getId() {
         return id;
     }

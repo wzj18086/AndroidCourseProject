@@ -70,6 +70,7 @@ public class EventActivity extends BaseActivity {
                     event.setPlanContext(textView_context);
                     event.setDaedlineTime(buttton_context);
                     event.setPlanType("1");
+                    event.setFinished("0");
                     event.save();
                 }
                 Intent intent=new Intent(EventActivity.this,MainActivity.class);
@@ -130,6 +131,8 @@ public class EventActivity extends BaseActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // 将数据集中的数据移除
+                events.get(viewHolder.getAdapterPosition()).setFinished("1");
+                events.get(viewHolder.getAdapterPosition()).save();
                 events.remove(viewHolder.getAdapterPosition());
                 // 刷新列表
                 eventAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());

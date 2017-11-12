@@ -77,7 +77,7 @@
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addNewPlan"
             android:layout_marginLeft="250dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_action_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 

@@ -5,22 +5,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/header_view"
-        android:textSize="35sp"
-        android:gravity="center"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+        <TextView
+            android:textColor="#000000"
+            android:background="#0000FF"
+            android:id="@+id/header_view"
+            android:textSize="35sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
 
 <android.support.v7.widget.CardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="8dp"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true"
-    app:contentPadding="5dp">
+    app:contentPadding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,12 +51,6 @@
                 android:layout_gravity="center_vertical"
                 android:textSize="20sp"
                 android:id="@+id/content"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" />
-            <Switch
-                android:layout_gravity="center_vertical"
-                android:id="@+id/isFinish"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
