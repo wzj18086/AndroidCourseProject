@@ -104,7 +104,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
 
@@ -115,7 +116,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
 
@@ -125,7 +127,8 @@ public class planActivity extends BaseActivity {
                         plan.setWeekday("4");
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.setPlanType("0");
                         plan.save();
                     }
@@ -138,7 +141,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
 
@@ -149,7 +153,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
                     if (Saturday.isChecked())
@@ -159,7 +164,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
                     if (Sunday.isChecked())
@@ -169,7 +175,8 @@ public class planActivity extends BaseActivity {
                         plan.setPlanContext(textView_context);
                         plan.setDaedlineTime(buttton_context);
                         plan.setPlanType("0");
-                        plan.setFinished("0");
+                        if(!plan.isFinished().equals("1"))
+                            plan.setFinished("0");
                         plan.save();
                     }
                 }

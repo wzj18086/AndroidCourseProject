@@ -41,7 +41,6 @@ public class WeekDayActivity extends BaseActivity {
         Intent intent=getIntent();
         final String day_of_week=intent.getStringExtra("day_of_week");
         weekdayPlanList= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
-        Log.d("WeekDayActivity",day_of_week);
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.planRecyclerView_weekday);
         weekDayAdapter=new WeekDayAdapter(weekdayPlanList);
         recyclerView.setAdapter(weekDayAdapter);
@@ -120,15 +119,20 @@ public class WeekDayActivity extends BaseActivity {
                     Button button = (Button) layout.findViewById(R.id.weekday_timeSelect);
                     final String buttton_context = button.getText().toString();
                     final String textView_context = textView.getText().toString();
-                    Log.d("WeekDayActivity",buttton_context);
                     Plan plan=new Plan();
                     plan.setWeekday(day_of_week);
-                    Log.d("WeekDayActivity",day_of_week);
                     plan.setPlanContext(textView_context);
                     plan.setDaedlineTime(buttton_context);
                     plan.setPlanType("0");
-                    plan.setFinished("0");
-                    plan.save();
+                    if(plan.isFinished()==null)
+                    {
+                        plan.setFinished("0");
+                        plan.save();
+                    }else
+                    {
+                        plan.save();
+                    }
+
                 }
                 Intent intent=new Intent(WeekDayActivity.this,MainActivity.class);
                 startActivity(intent);

@@ -31,10 +31,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         TextView content;
         TextView isFinish;
         TextView headerView;
+        View line;
         public ViewHolder(View view)
         {
             super(view);
             headerView=(TextView)view.findViewById(R.id.header_view);
+            line=(View)view.findViewById(R.id.line);
             time_select=(TextView) view.findViewById(R.id.main_time);
             content=(TextView) view.findViewById(R.id.content);
             //isFinish=(TextView)view.findViewById(R.id.isFinish);
@@ -59,14 +61,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         if(plan.getPosition()!=0 && plan.getPlanType().equals("0"))
         {
             holder.headerView.setVisibility(View.VISIBLE);
+            holder.line.setVisibility(View.VISIBLE);
             holder.headerView.setText("计划");
 
         }else if (plan.getPosition()!=0 && plan.getPlanType().equals("1"))
         {
             holder.headerView.setVisibility(View.VISIBLE);
+            holder.line.setVisibility(View.VISIBLE);
             holder.headerView.setText("备忘");
         }else
+        {
             holder.headerView.setVisibility(View.GONE);
+            holder.line.setVisibility(View.GONE);
+        }
+
         if(plan.getPlanType().equals("0"))
         {
             holder.time_select.setText(plan.getDaedlineTime());

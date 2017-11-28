@@ -11,6 +11,7 @@
 
         <TextView
             android:textStyle="bold"
+            android:textColor="@android:color/white"
             android:id="@+id/app_widget_plan"
             android:layout_width="0dp"
             android:layout_height="match_parent"

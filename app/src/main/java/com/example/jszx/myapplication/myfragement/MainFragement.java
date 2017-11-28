@@ -4,9 +4,11 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,6 +50,9 @@ public class MainFragement extends Fragment {
     private String day_of_month;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
+    private LocalBroadcastManager localBroadcastManager;
+    private IntentFilter intentFilter;
+    private AlarmManager alarmManager;
 
     @Nullable
     @Override
@@ -59,6 +64,8 @@ public class MainFragement extends Fragment {
         calendar=Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+        localBroadcastManager=LocalBroadcastManager.getInstance(this.getActivity());
 
         String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
 
@@ -75,13 +82,11 @@ public class MainFragement extends Fragment {
                 refreshList(day_of_week);
             }
         });
-
-        //mainPlanList= DataSupport.where("weekday=? and isFinished=?",day_of_week,"false").find(Plan.class);
+        Plan plan=new Plan();
+        plan.setFinished("0");
+        plan.updateAll("weekday<>? ",day_of_week);
+        plan.updateAll("daedlineTime<>? and planType=?",calendar.get(Calendar.YEAR)+"-"+month+"-"+day_of_month,"1");
         mainPlanList= DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);
-        for(int i=0;i<mainPlanList.size();i++)
-        {
-            Log.d(TAG,mainPlanList.get(i).isFinished());
-        }
 
 
         if(mainPlanList.size()!=0)
@@ -101,6 +106,8 @@ public class MainFragement extends Fragment {
         mainPlanList=addEvent(eventList,mainPlanList);
         mainAdapter.notifyDataSetChanged();
         setAlarm(mainPlanList);
+
+
 
         new ItemTouchHelper(new ItemTouchHelper.Callback() {
             private RecyclerView.ViewHolder vh;
@@ -157,11 +164,19 @@ public class MainFragement extends Fragment {
                 // 将数据集中的数据移除
                 mainPlanList.get(viewHolder.getAdapterPosition()).setFinished("1");
                 mainPlanList.get(viewHolder.getAdapterPosition()).save();
-                Log.d(TAG,mainPlanList.get(viewHolder.getAdapterPosition()).isFinished());
+                Intent intent=new Intent("MainFragment");
+                localBroadcastManager.sendBroadcast(intent);
+
+                //删除闹钟
+                Intent intent2 = new Intent(getActivity(), AlarmReciever.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), mainPlanList.get(viewHolder.getAdapterPosition()).getId(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.cancel(pendingIntent);
                 mainPlanList.remove(viewHolder.getAdapterPosition());
 
                 // 刷新列表
                 mainAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+
             }
         }).attachToRecyclerView(recyclerView);
         return view;
@@ -192,13 +207,14 @@ public class MainFragement extends Fragment {
             calendar1.set(Calendar.SECOND,0);
             calendar1.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
             if(calendar1.after(calendar)) {
+                //设置闹钟
                 Intent intent = new Intent(this.getActivity(), AlarmReciever.class);
                 intent.putExtra("item",i);
                 intent.putExtra("Type",mainPlanList.get(i).getPlanType());
                 intent.putExtra("content", mainPlanList.get(i).getPlanContext());
-                intent.setAction("ALARM_ACTION" + calendar1.getTimeInMillis());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                //intent.setAction("ALARM_ACTION" + calendar1.getTimeInMillis());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getActivity(), mainPlanList.get(i).getId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar1.getTimeInMillis(), pendingIntent);
             }
         }
@@ -241,7 +257,7 @@ public class MainFragement extends Fragment {
                         Calendar calendar2=Calendar.getInstance();
                         day_of_month=String.valueOf(calendar2.get(Calendar.DAY_OF_MONTH));
                         month=String.valueOf(calendar2.get(Calendar.MONTH)+1);
-                        List<Plan> mainPlanList_refrsh= DataSupport.where("weekday=?",day_of_week).find(Plan.class);
+                        List<Plan> mainPlanList_refrsh= DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);
                         if(mainPlanList_refrsh.size()!=0)
                         {
                             mainPlanList_refrsh.get(0).setPosition(1);
@@ -249,7 +265,6 @@ public class MainFragement extends Fragment {
                         mainPlanList_refrsh=addEvent(eventList,mainPlanList_refrsh);
                         mainPlanList.clear();
                         mainPlanList.addAll(mainPlanList_refrsh);
-                        Log.d(TAG,mainPlanList.get(0).isFinished());
                         mainAdapter.notifyDataSetChanged();
                         setAlarm(mainPlanList);
                         swipeRefreshLayout.setRefreshing(false);
@@ -258,4 +273,6 @@ public class MainFragement extends Fragment {
             }
         }).start();
     }
+
+
 }

@@ -2,39 +2,49 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:title="添加计划"
+        android:icon="@drawable/ic_plan"
         android:id="@+id/addPlan"/>
     <item
         android:title="添加备忘"
+        android:icon="@drawable/ic_evnet"
         android:id="@+id/addEvent"/>
     <item
         android:title="修改计划"
         android:id="@+id/changePlan">
         <menu>
             <item
+                android:icon="@drawable/ic_monday"
                 android:title="星期一"
                 android:id="@+id/Mon"/>
             <item
+                android:icon="@drawable/ic_tuesday"
                 android:title="星期二"
                 android:id="@+id/Tue"/>
             <item
+                android:icon="@drawable/ic_wednesday"
                 android:title="星期三"
                 android:id="@+id/Wed"/>
             <item
+                android:icon="@drawable/ic_thursday"
                 android:title="星期四"
                 android:id="@+id/Thu"/>
             <item
+                android:icon="@drawable/ic_friday"
                 android:title="星期五"
                 android:id="@+id/Fri"/>
             <item
+                android:icon="@drawable/ic_saturday"
                 android:title="星期六"
                 android:id="@+id/Sat"/>
             <item
+                android:icon="@drawable/ic_sunday"
                 android:title="星期日"
                 android:id="@+id/Sun"/>
 
         </menu>
     </item>
     <item
+        android:icon="@drawable/ic_exit"
         android:title="退出"
         android:id="@+id/exit"/>
 </menu>

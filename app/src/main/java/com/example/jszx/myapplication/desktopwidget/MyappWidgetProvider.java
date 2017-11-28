@@ -28,14 +28,10 @@ public class MyappWidgetProvider extends AppWidgetProvider {
 
         if(REFRESH_ACTION.equals(intent.getAction()))
         {
-            remoteViews=new RemoteViews(context.getPackageName(), R.layout.desktop_widget);
-            AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
-            Intent service_intent=new Intent(context,ListViewService.class);
-            remoteViews.setRemoteAdapter(R.id.listview,service_intent);
-            remoteViews.setEmptyView(R.id.listview,android.R.id.empty);
-            ComponentName componentName=new ComponentName(context,MyappWidgetProvider.class);
-            appWidgetManager.updateAppWidget(componentName,remoteViews);
 
+            AppWidgetManager appWidgetManager=AppWidgetManager.getInstance(context);
+            ComponentName componentName=new ComponentName(context,MyappWidgetProvider.class);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(componentName),R.id.listview);
         }
 
     }
@@ -47,7 +43,7 @@ public class MyappWidgetProvider extends AppWidgetProvider {
         remoteViews.setRemoteAdapter(R.id.listview,service_intent);
         remoteViews.setEmptyView(R.id.listview,android.R.id.empty);
         Intent refresh_intent=new Intent(REFRESH_ACTION);
-        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,R.id.refresh_button,refresh_intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent=PendingIntent.getBroadcast(context,R.id.refresh_button,refresh_intent,PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.refresh_button,pendingIntent);
         for(int appWidgetID:appWidgetIds)
         {

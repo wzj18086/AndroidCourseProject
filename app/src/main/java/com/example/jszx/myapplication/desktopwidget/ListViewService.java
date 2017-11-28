@@ -39,12 +39,14 @@ public class ListViewService extends RemoteViewsService {
         public void onCreate() {
             Calendar calendar=Calendar.getInstance();
             String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
-            planList=DataSupport.where("weekday=?",day_of_week).find(Plan.class);
+            planList=DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);
         }
 
         @Override
         public void onDataSetChanged() {
-
+            Calendar calendar=Calendar.getInstance();
+            String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+            planList=DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);
         }
 
         @Override

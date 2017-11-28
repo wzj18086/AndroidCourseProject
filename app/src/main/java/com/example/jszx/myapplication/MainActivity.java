@@ -18,8 +18,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +44,7 @@ public class MainActivity extends BaseActivity {
     private boolean isExit=false;
     private TextView page1;
     private TextView page2;
+    boolean isSpinnerFirst = true ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +52,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         page1=(TextView)findViewById(R.id.is_not_finished);
         page2=(TextView)findViewById(R.id.is_finished);
-        page1.setTextColor(Color.BLUE);
+        page1.setTextColor(getResources().getColor(R.color.colorPrimary));
         page2.setTextColor(Color.BLACK);
-
         fragments=new ArrayList<>();
         fragments.add(new MainFragement());
         fragments.add(new SecondFragment());
@@ -68,12 +72,12 @@ public class MainActivity extends BaseActivity {
                 switch (position)
                 {
                     case 0:
-                        page1.setTextColor(Color.BLUE);
+                        page1.setTextColor(getResources().getColor(R.color.colorPrimary));
                         page2.setTextColor(Color.BLACK);
                         break;
                     case 1:
                         page1.setTextColor(Color.BLACK);
-                        page2.setTextColor(Color.BLUE);
+                        page2.setTextColor(getResources().getColor(R.color.colorPrimary));
                         break;
                 }
             }
@@ -91,11 +95,40 @@ public class MainActivity extends BaseActivity {
         if(actionBar!=null)
         {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+            actionBar.setHomeAsUpIndicator(R.drawable.navigation_menu);
         }
 
         NavigationView navigationView=(NavigationView)findViewById(R.id.navigation_view);
-
+        //View view= navigationView.inflateHeaderView(R.layout.menu_header);
+        View view=navigationView.getHeaderView(0);
+        TextView menuHeader=(TextView)view.findViewById(R.id.menu_header);
+        Calendar calendar=Calendar.getInstance();
+        menuHeader.setText(String.valueOf(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)));
+        TextView weekday=(TextView)findViewById(R.id.weekday);
+        switch (calendar.get(Calendar.DAY_OF_WEEK))
+        {
+            case 1:
+                weekday.setText("Sunday");
+                break;
+            case 2:
+                weekday.setText("Monday");
+                break;
+            case 3:
+                weekday.setText("Tuesday");
+                break;
+            case 4:
+                weekday.setText("Wednesday");
+                break;
+            case 5:
+                weekday.setText("Thursday");
+                break;
+            case 6:
+                weekday.setText("Friday");
+                break;
+            case 7:
+                weekday.setText("Saturday");
+                break;
+        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -146,6 +179,9 @@ public class MainActivity extends BaseActivity {
                         Intent intent1=new Intent(MainActivity.this,WeekDayActivity.class);
                         intent1.putExtra("day_of_week","1");
                         startActivity(intent1);
+                        break;
+                    case R.id.exit:
+                        ActivityController.finishAll();
                         break;
 
                 }
