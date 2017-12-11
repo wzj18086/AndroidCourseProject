@@ -168,14 +168,32 @@ public class MainFragement extends Fragment {
                 localBroadcastManager.sendBroadcast(intent);
 
                 //删除闹钟
-                Intent intent2 = new Intent(getActivity(), AlarmReciever.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), mainPlanList.get(viewHolder.getAdapterPosition()).getId(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.cancel(pendingIntent);
+                Calendar calendar2=Calendar.getInstance();
+                calendar2.setTimeInMillis(System.currentTimeMillis());
+                calendar2.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+                String time=mainPlanList.get(viewHolder.getAdapterPosition()).getDaedlineTime();
+                int hour;
+                int minute;
+                if(mainPlanList.get(viewHolder.getAdapterPosition()).getPlanType().equals("0")) {
+                    hour = Integer.parseInt(time.split(":")[0]);
+                    minute = Integer.parseInt(time.split(":")[1]);
+                }else {
+                    hour=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[0]);
+                    minute=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[1]);
+                }
+                calendar2.set(Calendar.HOUR_OF_DAY,hour);
+                calendar2.set(Calendar.MINUTE,minute);
+                calendar2.set(Calendar.SECOND,0);
+                if(calendar2.after(calendar))
+                {
+                    Intent intent2 = new Intent(getActivity(), AlarmReciever.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), mainPlanList.get(viewHolder.getAdapterPosition()).getId(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.cancel(pendingIntent);
+                }
                 mainPlanList.remove(viewHolder.getAdapterPosition());
 
                 // 刷新列表
                 mainAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
-
 
             }
         }).attachToRecyclerView(recyclerView);
@@ -273,6 +291,5 @@ public class MainFragement extends Fragment {
             }
         }).start();
     }
-
 
 }

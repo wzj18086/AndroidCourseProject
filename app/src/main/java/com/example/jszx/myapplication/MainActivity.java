@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -24,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,25 +43,29 @@ import java.util.TimeZone;
 public class MainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private List<Fragment> fragments;
+    private List<String> tabName;
     private boolean isExit=false;
-    private TextView page1;
-    private TextView page2;
     boolean isSpinnerFirst = true ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        page1=(TextView)findViewById(R.id.is_not_finished);
-        page2=(TextView)findViewById(R.id.is_finished);
-        page1.setTextColor(getResources().getColor(R.color.colorPrimary));
-        page2.setTextColor(Color.BLACK);
         fragments=new ArrayList<>();
         fragments.add(new MainFragement());
         fragments.add(new SecondFragment());
-        MyFragmentAdapter myFragmentAdapter=new MyFragmentAdapter(getSupportFragmentManager(),fragments);
+        tabName=new ArrayList<>();
+        tabName.add("未完成");
+        tabName.add("已完成");
+        TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(tabName.get(0)));
+        tabLayout.addTab(tabLayout.newTab().setText(tabName.get(1)));
+        MyFragmentAdapter myFragmentAdapter=new MyFragmentAdapter(getSupportFragmentManager(),fragments,tabName);
         ViewPager viewPager=(ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(myFragmentAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -68,18 +74,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-
-                switch (position)
-                {
-                    case 0:
-                        page1.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        page2.setTextColor(Color.BLACK);
-                        break;
-                    case 1:
-                        page1.setTextColor(Color.BLACK);
-                        page2.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        break;
-                }
             }
 
             @Override
@@ -144,6 +138,10 @@ public class MainActivity extends BaseActivity {
                     case R.id.addEvent:
                         Intent intent_event=new Intent(MainActivity.this,EventActivity.class);
                         startActivity(intent_event);
+                        break;
+                    case R.id.weather:
+                        Intent intent_weather=new Intent(MainActivity.this,com.example.jszx.myapplication.coolweather.MainActivity.class);
+                        startActivity(intent_weather);
                         break;
                     case R.id.Mon:
                         Intent intent2=new Intent(MainActivity.this,WeekDayActivity.class);

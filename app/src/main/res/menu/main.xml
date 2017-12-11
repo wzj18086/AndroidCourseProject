@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_evnet"
         android:id="@+id/addEvent"/>
     <item
+        android:icon="@drawable/weather"
+        android:id="@+id/weather"
+        android:title="天气"/>
+    <item
         android:title="修改计划"
         android:id="@+id/changePlan">
         <menu>

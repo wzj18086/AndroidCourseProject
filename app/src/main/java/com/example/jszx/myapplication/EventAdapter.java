@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private List<Plan> EventList;
     private EventAdapter.MyonLongClickListener myonLongClickListener;
     Calendar calendar;
+    int date_month;
+    int date_day;
     static class ViewHolder extends RecyclerView.ViewHolder{
         Button eventTimeSelect;
         TextView eventContent;
@@ -59,8 +62,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         calendar.set(Calendar.YEAR,i);
-                        calendar.set(Calendar.MONTH,i1);
-                        calendar.set(Calendar.DAY_OF_MONTH,i2);
+                        date_month=i1;
+                        date_day=i2;
                     }
                 },year,month,day);
 
@@ -70,8 +73,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
                         calendar.set(Calendar.HOUR,hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-                        viewHolder.eventTimeSelect.setText(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+(calendar.get(Calendar.DAY_OF_MONTH)-1)+" "+String_to_time.Translate(hourOfDay)+":"+String_to_time.Translate(minute));
-                        //mplanList.get(viewHolder.getAdapterPosition()).setDaedlineTime(new Date());
+                        viewHolder.eventTimeSelect.setText(calendar.get(Calendar.YEAR)+"-"+(date_month+1)+"-"+date_day+" "+String_to_time.Translate(hourOfDay)+":"+String_to_time.Translate(minute));
+
                     }
                 },hour,minute,true);
                 timePickerDialog.show();

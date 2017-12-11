@@ -13,10 +13,12 @@ import java.util.List;
 
 public class MyFragmentAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragments;
-    public MyFragmentAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList)
+    private List<String> tabName;
+    public MyFragmentAdapter(FragmentManager fragmentManager, List<Fragment> fragmentList,List<String> tabName)
     {
         super(fragmentManager);
         this.fragments=fragmentList;
+        this.tabName=tabName;
     }
     @Override
     public Fragment getItem(int position) {
@@ -34,6 +36,6 @@ public class MyFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return super.getPageTitle(position);
+        return tabName.get(position % tabName.size());
     }
 }

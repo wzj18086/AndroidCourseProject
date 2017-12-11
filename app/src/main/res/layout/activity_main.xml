@@ -24,37 +24,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"/>
         </android.support.v7.widget.Toolbar>
-        <android.support.v7.widget.CardView
+        <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
+            app:tabSelectedTextColor="@android:color/white"
             android:layout_height="wrap_content"
-            app:cardElevation="5sp"
-            app:cardUseCompatPadding="true"
-            app:cardPreventCornerOverlap="true"
-            app:cardCornerRadius="3sp">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/is_not_finished"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:text="未完成"/>
-                <TextView
-                    android:id="@+id/is_finished"
-                    android:gravity="center"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:text="已完成"/>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            android:background="@color/colorPrimary"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+            android:id="@+id/tab_layout">
 
-
+        </android.support.design.widget.TabLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
