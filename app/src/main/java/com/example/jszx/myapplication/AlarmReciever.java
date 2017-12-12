@@ -34,17 +34,18 @@ public class AlarmReciever extends BroadcastReceiver {
         if(type.equals("0"))
         {
             Notification notification=new Notification.Builder(context)
-                    .setContentTitle("计划时间到了！！！！")
-                    .setContentText(hour+" "+minute+" "+content)
+                    .setContentTitle("计划时间到了！")
+                    .setContentText(hour+":"+minute+" "+content)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
+                    .setSmallIcon(R.mipmap.icon)
                     .build();
             manager.notify(plan_item,notification);
         }else
         {
             Notification notification=new Notification.Builder(context)
-                    .setContentTitle("备忘时间到了！！！！")
+                    .setContentTitle("备忘时间到了！")
                     .setContentText(hour+" "+minute+" "+content)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher)

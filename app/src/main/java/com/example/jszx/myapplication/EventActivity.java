@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import java.util.List;
 public class EventActivity extends BaseActivity {
     List<Plan> events=new ArrayList<>();
     EventAdapter eventAdapter;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,41 +45,17 @@ public class EventActivity extends BaseActivity {
         }
 
         RecyclerView recyclerView=(RecyclerView)findViewById(R.id.eventRecyclerView);
-        final LinearLayoutManager layoutManager=new LinearLayoutManager(this);
+        layoutManager=new LinearLayoutManager(this);
         recyclerView.setAdapter(eventAdapter);
         recyclerView.setLayoutManager(layoutManager);
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.addNewEvent);
+        com.github.clans.fab.FloatingActionButton floatingActionButton = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.addNewEvent);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eventAdapter.add(new Plan(), eventAdapter.getItemCount());
             }
         });
-        Button ensure_button=(Button) findViewById(R.id.ensure_event);
 
-        ensure_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DataSupport.deleteAll(Plan.class,"planType=?","1");
-                for (int i = 0; i <eventAdapter.getItemCount(); i++) {
-                    View view1 = layoutManager.findViewByPosition(i);
-                    CardView layout = (CardView) view1;
-                    TextView textView = (TextView) layout.findViewById(R.id.eventContext);
-                    Button button = (Button) layout.findViewById(R.id.event_timeSelect);
-                    final String buttton_context = button.getText().toString();
-                    final String textView_context = textView.getText().toString();
-                    Plan event=new Plan();
-                    event.setPlanContext(textView_context);
-                    event.setDaedlineTime(buttton_context);
-                    event.setPlanType("1");
-                    event.setFinished("0");
-                    event.save();
-                }
-                Intent intent=new Intent(EventActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-
-        });
         new ItemTouchHelper(new ItemTouchHelper.Callback() {
             private RecyclerView.ViewHolder vh;
 
@@ -140,11 +118,35 @@ public class EventActivity extends BaseActivity {
         }).attachToRecyclerView(recyclerView);
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save,menu);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
             case android.R.id.home:
                 this.finish();
+                break;
+            case R.id.save_data:
+                DataSupport.deleteAll(Plan.class,"planType=?","1");
+                for (int i = 0; i <eventAdapter.getItemCount(); i++) {
+                    View view1 = layoutManager.findViewByPosition(i);
+                    CardView layout = (CardView) view1;
+                    TextView textView = (TextView) layout.findViewById(R.id.eventContext);
+                    Button button = (Button) layout.findViewById(R.id.event_timeSelect);
+                    final String buttton_context = button.getText().toString();
+                    final String textView_context = textView.getText().toString();
+                    Plan event=new Plan();
+                    event.setPlanContext(textView_context);
+                    event.setDaedlineTime(buttton_context);
+                    event.setPlanType("1");
+                    event.setFinished("0");
+                    event.save();
+                }
+                Intent intent=new Intent(EventActivity.this,MainActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;

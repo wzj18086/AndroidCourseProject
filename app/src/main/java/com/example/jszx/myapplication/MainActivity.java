@@ -143,6 +143,10 @@ public class MainActivity extends BaseActivity {
                         Intent intent_weather=new Intent(MainActivity.this,com.example.jszx.myapplication.coolweather.MainActivity.class);
                         startActivity(intent_weather);
                         break;
+                    case R.id.note:
+                        Intent intent_note=new Intent(MainActivity.this,com.example.jszx.myapplication.Note.Main2Activity.class);
+                        startActivity(intent_note);
+                        break;
                     case R.id.Mon:
                         Intent intent2=new Intent(MainActivity.this,WeekDayActivity.class);
                         intent2.putExtra("day_of_week","2");
@@ -187,8 +191,6 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-
-
     }
 
     @Override
@@ -199,7 +201,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.main,menu);
+        getMenuInflater().inflate(R.menu.main_item,menu);
         return true;
     }
 
@@ -219,6 +221,15 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.version_information:
+                Intent intent=new Intent(MainActivity.this,Version.class);
+                startActivity(intent);
+                break;
+                default:
+                    break;
+        }
         return true;
     }
 

@@ -16,9 +16,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="7"
-            android:background="#0000FF"
+            android:background="@color/colorPrimary"
             android:gravity="center"
-            android:text="今日计划"
+            android:text="WePlan"
             android:textSize="30sp" />
 
         <Button
@@ -26,7 +26,7 @@
             android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="1.5"
-            android:background="#0000FF"
+            android:background="@color/colorPrimary"
             android:text="刷新"
             android:textColor="#FFFFFF" />
     </LinearLayout>

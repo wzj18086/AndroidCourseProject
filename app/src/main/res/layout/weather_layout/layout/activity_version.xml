@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jszx.myapplication.Version">
+    <ImageView
+        android:layout_centerInParent="true"
+        android:id="@+id/version_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/version_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/version_icon"
+        android:layout_centerInParent="true"
+        android:textSize="30dp"
+        android:text="Version:1.0"/>
+    <TextView
+        android:textSize="15dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/version_number"
+        android:id="@+id/version_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开发人员：王志杰、袁恒希、李欣茹"/>
+
+</RelativeLayout>

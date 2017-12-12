@@ -12,6 +12,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +36,7 @@ public class planActivity extends BaseActivity {
     private CheckBox Friday;
     private CheckBox Saturday;
     private CheckBox Sunday;
-    private Button ensureData;
+    private LinearLayoutManager layoutManager;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -44,52 +45,7 @@ public class planActivity extends BaseActivity {
             case android.R.id.home:
                 this.finish();
                 break;
-        }
-        return true;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.plan);
-
-        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null)
-        {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.planRecyclerView);
-        planAdapter = new PlanAdapter(mplanList);
-        recyclerView.setAdapter(planAdapter);
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setAutoMeasureEnabled(true);
-        recyclerView.setLayoutManager(layoutManager);
-
-
-
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.addNewPlan);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                planAdapter.add(new Plan(), planAdapter.getItemCount());
-            }
-        });
-        Monday = (CheckBox) findViewById(R.id.Monday);
-        Tuesday = (CheckBox) findViewById(R.id.Tuesday);
-        Wednesday = (CheckBox) findViewById(R.id.Wednsday);
-        Thursday = (CheckBox) findViewById(R.id.Thusday);
-        Friday = (CheckBox) findViewById(R.id.Friday);
-        Saturday = (CheckBox) findViewById(R.id.Saturday);
-        Sunday = (CheckBox) findViewById(R.id.Sunday);
-        ensureData = (Button) findViewById(R.id.ensure);
-
-        ensureData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            case R.id.save_data:
                 for (int i = 0; i < planAdapter.getItemCount(); i++) {
                     View view1 = layoutManager.findViewByPosition(i);
                     CardView layout = (CardView) view1;
@@ -182,9 +138,52 @@ public class planActivity extends BaseActivity {
                 }
                 Intent intent=new Intent(planActivity.this,MainActivity.class);
                 startActivity(intent);
-            }
-        });
+                break;
+        }
+        return true;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.plan);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.planRecyclerView);
+        planAdapter = new PlanAdapter(mplanList);
+        recyclerView.setAdapter(planAdapter);
+        layoutManager = new LinearLayoutManager(this);
+        layoutManager.setAutoMeasureEnabled(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        com.github.clans.fab.FloatingActionButton floatingActionButton = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.addNewPlan);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                planAdapter.add(new Plan(), planAdapter.getItemCount());
+            }
+        });
+        Monday = (CheckBox) findViewById(R.id.Monday);
+        Tuesday = (CheckBox) findViewById(R.id.Tuesday);
+        Wednesday = (CheckBox) findViewById(R.id.Wednsday);
+        Thursday = (CheckBox) findViewById(R.id.Thusday);
+        Friday = (CheckBox) findViewById(R.id.Friday);
+        Saturday = (CheckBox) findViewById(R.id.Saturday);
+        Sunday = (CheckBox) findViewById(R.id.Sunday);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.save,menu);
+        return true;
+    }
 }
 

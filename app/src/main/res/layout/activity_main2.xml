@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/wood3"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_event"
+        android:id="@+id/toolbar_2"
         android:layout_width="match_parent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -15,23 +14,23 @@
     <android.support.v7.widget.RecyclerView
         android:layout_weight="7"
         android:layout_gravity="center"
-        android:id="@+id/eventRecyclerView"
+        android:id="@+id/NoteRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp">
     </android.support.v7.widget.RecyclerView>
 
     <FrameLayout
-        android:layout_height="0dp"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layout_weight="1"
         android:orientation="horizontal">
-
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/addNewEvent"
-            android:layout_gravity="end"
+            android:id="@+id/addNote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_action_name" />
+            android:src="@drawable/ic_action_name"
+            android:layout_gravity="end"/>
+
     </FrameLayout>
 </LinearLayout>

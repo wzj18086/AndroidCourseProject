@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
     <item
         android:title="添加计划"
         android:icon="@drawable/ic_plan"
@@ -12,6 +13,11 @@
         android:icon="@drawable/weather"
         android:id="@+id/weather"
         android:title="天气"/>
+    <item
+        android:title="读书笔记"
+        android:id="@+id/note"
+        android:icon="@drawable/ic_note"/>
+    </group>
     <item
         android:title="修改计划"
         android:id="@+id/changePlan">
@@ -47,8 +53,12 @@
 
         </menu>
     </item>
-    <item
-        android:icon="@drawable/ic_exit"
-        android:title="退出"
-        android:id="@+id/exit"/>
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/ic_exit"
+            android:title="退出"
+            android:id="@+id/exit"/>
+    </group>
+
 </menu>

@@ -17,6 +17,7 @@ public class Plan extends DataSupport{
     private String Weekday;
     private String planType;
     private int position;
+    private String isFinished="0";
 
     public String isFinished() {
         return isFinished;
@@ -26,7 +27,7 @@ public class Plan extends DataSupport{
         isFinished = finished;
     }
 
-    private String isFinished;
+
 
     public int getId() {
         return id;
