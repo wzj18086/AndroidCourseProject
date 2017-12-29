@@ -22,7 +22,7 @@ import org.litepal.crud.DataSupport;
 
 import java.util.Collections;
 import java.util.List;
-
+//每日计划界面（具体到星期）
 public class WeekDayActivity extends BaseActivity {
     private List<Plan> weekdayPlanList;
     private WeekDayAdapter weekDayAdapter;

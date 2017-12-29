@@ -14,7 +14,7 @@ import com.example.jszx.myapplication.R;
 /**
  * Created by 王志杰 on 2017/11/3.
  */
-
+//桌面小部件的实现
 public class MyappWidgetProvider extends AppWidgetProvider {
     public static final String REFRESH_ACTION = "com.example.jszx.myapplication.desktopwidget.action.CLICK";
     private RemoteViews remoteViews;
@@ -36,6 +36,7 @@ public class MyappWidgetProvider extends AppWidgetProvider {
 
     }
 
+    //创建小部件及更新小部件时的操作
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         remoteViews=new RemoteViews(context.getPackageName(), R.layout.desktop_widget);

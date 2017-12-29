@@ -54,6 +54,8 @@ public class Main2Activity extends AppCompatActivity {
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         NoteRecyclerview.setLayoutManager(linearLayoutManager);
+
+        //floatingActionButton的点击响应事件，进行笔记的添加
         com.github.clans.fab.FloatingActionButton floatingActionButton=(com.github.clans.fab.FloatingActionButton) findViewById(R.id.addNote);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

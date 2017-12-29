@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by 王志杰 on 2017/11/3.
  */
-
+//桌面小部件内容的显示
 public class ListViewService extends RemoteViewsService {
 
 

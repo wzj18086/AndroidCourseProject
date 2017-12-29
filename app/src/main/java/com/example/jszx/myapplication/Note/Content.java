@@ -8,9 +8,9 @@ import org.litepal.crud.DataSupport;
 
 public class Content extends DataSupport {
     private int id;
-    private String content;
-    private String titleText;
-    private Integer position;
+    private String content; //读书笔记的内容
+    private String titleText;   //读书笔记的标题
+    private Integer position;    //存储图片的辨识位
     public Integer getPosition() {
         return position;
     }

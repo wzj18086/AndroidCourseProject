@@ -57,13 +57,16 @@ public class MainActivity extends BaseActivity {
         tabName=new ArrayList<>();
         tabName.add("未完成");
         tabName.add("已完成");
+
+        //TabLayout和Viewpager的结合使用，实现滑动fragment
         TabLayout tabLayout=(TabLayout)findViewById(R.id.tab_layout);
+        //设置fragment的标题
         tabLayout.addTab(tabLayout.newTab().setText(tabName.get(0)));
         tabLayout.addTab(tabLayout.newTab().setText(tabName.get(1)));
+
         MyFragmentAdapter myFragmentAdapter=new MyFragmentAdapter(getSupportFragmentManager(),fragments,tabName);
         ViewPager viewPager=(ViewPager) findViewById(R.id.view_pager);
         viewPager.setAdapter(myFragmentAdapter);
-
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -93,11 +96,10 @@ public class MainActivity extends BaseActivity {
         }
 
         NavigationView navigationView=(NavigationView)findViewById(R.id.navigation_view);
-        //View view= navigationView.inflateHeaderView(R.layout.menu_header);
         View view=navigationView.getHeaderView(0);
         TextView menuHeader=(TextView)view.findViewById(R.id.menu_header);
         Calendar calendar=Calendar.getInstance();
-        menuHeader.setText(String.valueOf(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)));
+        menuHeader.setText(String.valueOf(calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH)));//设置抽屉菜单的header的时间
         TextView weekday=(TextView)findViewById(R.id.weekday);
         switch (calendar.get(Calendar.DAY_OF_WEEK))
         {
@@ -123,6 +125,8 @@ public class MainActivity extends BaseActivity {
                 weekday.setText("Saturday");
                 break;
         }
+
+        //设置抽屉菜单的点击事件响应
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -149,37 +153,37 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.Mon:
                         Intent intent2=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent2.putExtra("day_of_week","2");
+                        intent2.putExtra("day_of_week","2");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent2);
                         break;
                     case R.id.Tue:
                         Intent intent3=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent3.putExtra("day_of_week","3");
+                        intent3.putExtra("day_of_week","3");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent3);
                         break;
                     case R.id.Wed:
                         Intent intent4=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent4.putExtra("day_of_week","4");
+                        intent4.putExtra("day_of_week","4");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent4);
                         break;
                     case R.id.Thu:
                         Intent intent5=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent5.putExtra("day_of_week","5");
+                        intent5.putExtra("day_of_week","5");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent5);
                         break;
                     case R.id.Fri:
                         Intent intent6=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent6.putExtra("day_of_week","6");
+                        intent6.putExtra("day_of_week","6");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent6);
                         break;
                     case R.id.Sat:
                         Intent intent7=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent7.putExtra("day_of_week","7");
+                        intent7.putExtra("day_of_week","7");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent7);
                         break;
                     case R.id.Sun:
                         Intent intent1=new Intent(MainActivity.this,WeekDayActivity.class);
-                        intent1.putExtra("day_of_week","1");
+                        intent1.putExtra("day_of_week","1");//向WeekDayActivity传递星期数，以便让WeekdayActivity显示对应的星期数的计划事项
                         startActivity(intent1);
                         break;
                     case R.id.exit:
@@ -205,6 +209,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    //双击退出
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode==KeyEvent.KEYCODE_BACK)

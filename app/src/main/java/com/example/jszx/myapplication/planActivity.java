@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//计划界面（可以选择多个星期数）
 public class planActivity extends BaseActivity {
     private List<Plan> mplanList = new ArrayList<>();
     private PlanAdapter planAdapter;
@@ -38,6 +39,8 @@ public class planActivity extends BaseActivity {
     private CheckBox Sunday;
     private LinearLayoutManager layoutManager;
 
+
+    //判断哪些星期数是被选的，然后进行数据的存储
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())

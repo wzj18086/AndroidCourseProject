@@ -43,6 +43,8 @@ public class WeekDayAdapter extends RecyclerView.Adapter<WeekDayAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.week_day_item_plan,parent,false);
         final ViewHolder viewHolder=new ViewHolder(view);
+
+        //子项点击事件的响应
         viewHolder.weekDayTimeSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +52,8 @@ public class WeekDayAdapter extends RecyclerView.Adapter<WeekDayAdapter.ViewHold
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);
                 int day=calendar.get(Calendar.MINUTE);
+
+                //计划只需要选择时刻选择框
                 TimePickerDialog timePickerDialog=new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -69,6 +73,8 @@ public class WeekDayAdapter extends RecyclerView.Adapter<WeekDayAdapter.ViewHold
                 View view=LayoutInflater.from(v.getContext()).inflate(R.layout.edit_dialog,null);
                 final EditText editDialog=(EditText)view.findViewById(R.id.edit_dialog);
                 editDialog.setText(WeekDayPlanList.get(viewHolder.getAdapterPosition()).getPlanContext());
+
+                //编辑计划内容对话框的设置
                 editDialog.setSelection(editDialog.getText().length());
                 AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
                 builder.setTitle("Type your plan")

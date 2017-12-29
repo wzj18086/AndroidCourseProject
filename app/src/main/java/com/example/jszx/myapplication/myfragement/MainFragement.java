@@ -37,13 +37,14 @@ import java.util.TimeZone;
  * Created by 王志杰 on 2017/11/7.
  */
 
+//未完成页面，此时plan的isFinished的值应该为0
 public class MainFragement extends Fragment {
     private List<Plan> mainPlanList;
     private MainAdapter mainAdapter;
     private DrawerLayout drawerLayout;
     private Calendar calendar;
     private boolean isExit = false;
-    private boolean isFirst;
+    private boolean isFirst;//isFirst用来判断是否为第一个计划或备忘，如果是的话，前面要加上计划或备忘的标题头用以区分事项的不同种类
     private List<Plan> eventList;
     private String TAG = "MainActivity";
     private String month;
@@ -67,9 +68,9 @@ public class MainFragement extends Fragment {
 
         localBroadcastManager=LocalBroadcastManager.getInstance(this.getActivity());
 
-        String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
+        String day_of_week=String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));//获取当前的星期数
 
-        day_of_month=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        day_of_month=String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));//获取当前的月份
         month=String.valueOf(calendar.get(Calendar.MONTH)+1);
         isFirst=false;
 
@@ -82,11 +83,17 @@ public class MainFragement extends Fragment {
                 refreshList(day_of_week);
             }
         });
+
+        //使其他非当天的事项的isFinish全部置为0
         Plan plan=new Plan();
         plan.setFinished("0");
         plan.updateAll("weekday<>? ",day_of_week);
         plan.updateAll("daedlineTime<>? and planType=?",calendar.get(Calendar.YEAR)+"-"+month+"-"+day_of_month,"1");
-        mainPlanList= DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);
+
+
+
+
+        mainPlanList= DataSupport.where("weekday=? and isFinished=?",day_of_week,"0").find(Plan.class);//找出对应今天星期数的未完成的计划事项
 
 
         if(mainPlanList.size()!=0)
@@ -101,7 +108,7 @@ public class MainFragement extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setAutoMeasureEnabled(true);
         int i1=mainAdapter.getItemCount();
-        eventList=DataSupport.where("planType=? and isFinished=?","1","0").find(Plan.class);
+        eventList=DataSupport.where("planType=? and isFinished=?","1","0").find(Plan.class);//找出对应今天日期的未完成的备忘事项
 
         mainPlanList=addEvent(eventList,mainPlanList);
         mainAdapter.notifyDataSetChanged();
@@ -165,7 +172,7 @@ public class MainFragement extends Fragment {
                 mainPlanList.get(viewHolder.getAdapterPosition()).setFinished("1");
                 mainPlanList.get(viewHolder.getAdapterPosition()).save();
                 Intent intent=new Intent("MainFragment");
-                localBroadcastManager.sendBroadcast(intent);
+                localBroadcastManager.sendBroadcast(intent);//进行滑动删除之后，发送一个广播，告诉已完成的界面，让已完成界面进行更新
 
                 //删除闹钟
                 Calendar calendar2=Calendar.getInstance();
@@ -174,17 +181,20 @@ public class MainFragement extends Fragment {
                 String time=mainPlanList.get(viewHolder.getAdapterPosition()).getDaedlineTime();
                 int hour;
                 int minute;
+                //当删除的是每日的计划事项时，获取对应的时和分
+                // （计划事项和备忘事项的deadline格式不一样，当是plantype是0时，格式为XX：XX，而当plantype为1时，格式为XXXX-XX-XX XX:XX）
                 if(mainPlanList.get(viewHolder.getAdapterPosition()).getPlanType().equals("0")) {
                     hour = Integer.parseInt(time.split(":")[0]);
                     minute = Integer.parseInt(time.split(":")[1]);
                 }else {
+                    //当删除的是备忘事项时，获取对应的时和分
                     hour=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[0]);
                     minute=Integer.parseInt(time.split("-")[2].split(" ")[1].split(":")[1]);
                 }
                 calendar2.set(Calendar.HOUR_OF_DAY,hour);
                 calendar2.set(Calendar.MINUTE,minute);
                 calendar2.set(Calendar.SECOND,0);
-                if(calendar2.after(calendar))
+                if(calendar2.after(calendar))//判断时间是否还没到，如果没到才予以删除，如果已经过了则无须进行删除闹钟操作
                 {
                     Intent intent2 = new Intent(getActivity(), AlarmReciever.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), mainPlanList.get(viewHolder.getAdapterPosition()).getId(), intent2, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -205,6 +215,8 @@ public class MainFragement extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    //根据解析出的时和分来设置闹钟
     private void setAlarm(List<Plan> mainPlanList)
     {
         for(int i=0;i<mainPlanList.size();i++)
@@ -237,12 +249,14 @@ public class MainFragement extends Fragment {
             }
         }
     }
+
+    //添加备忘事项
     private List<Plan> addEvent(List<Plan> eventList, List<Plan> mainPlanList)
     {
         for (int temp=0;temp<eventList.size();temp++)
         {
             Plan event=eventList.get(temp);
-            if (event.getDaedlineTime().split("-")[1].equals(month) && event.getDaedlineTime().split("-")[2].split(" ")[0].equals(day_of_month))
+            if (event.getDaedlineTime().split("-")[1].equals(month) && event.getDaedlineTime().split("-")[2].split(" ")[0].equals(day_of_month))//判断日期是否是今天
             {
                 if(!isFirst)
                 {
@@ -257,6 +271,8 @@ public class MainFragement extends Fragment {
         }
         return mainPlanList;
     }
+
+    //下拉刷新操作，重新获取数据库中的数据
     public void refreshList(final String day_of_week)
     {
         new Thread(new Runnable() {

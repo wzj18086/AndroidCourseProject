@@ -58,13 +58,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Plan plan=mainPlanList.get(position);
-        if(plan.getPosition()!=0 && plan.getPlanType().equals("0"))
+        if(plan.getPosition()!=0 && plan.getPlanType().equals("0"))//当作为当天第一个计划时，应该要有一个标题头（类似于购物车的思想）
         {
             holder.headerView.setVisibility(View.VISIBLE);
             holder.line.setVisibility(View.VISIBLE);
             holder.headerView.setText("计划");
 
-        }else if (plan.getPosition()!=0 && plan.getPlanType().equals("1"))
+        }else if (plan.getPosition()!=0 && plan.getPlanType().equals("1"))//当作为当天第一个备忘时，应该要有一个标题头（类似于购物车的思想）
         {
             holder.headerView.setVisibility(View.VISIBLE);
             holder.line.setVisibility(View.VISIBLE);

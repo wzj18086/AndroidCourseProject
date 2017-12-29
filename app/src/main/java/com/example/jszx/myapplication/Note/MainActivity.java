@@ -115,11 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         Connector.getDatabase();
-        List<Content> text= DataSupport.findAll(Content.class);
+        List<Content> text= DataSupport.findAll(Content.class);//读出存储的读书笔记内容
         final List<Integer> positions=new ArrayList<>();
         List<String> content_list=new ArrayList<>();
         List<String> title_list=new ArrayList<>();
         id_list=new ArrayList<>();
+        //分别用不同的list存储不同的属性
         for(Content content:text)
         {
             String edit_text=content.getContent();
@@ -130,11 +131,11 @@ public class MainActivity extends AppCompatActivity {
             id_list.add(content.getId());
         }
         Intent intent=getIntent();
-        actual_position=intent.getIntExtra("actual_position",0);
-        state=intent.getIntExtra("state",0);
+        actual_position=intent.getIntExtra("actual_position",0);//获取在列表中的实际的位置，确定在list中的位置
+        state=intent.getIntExtra("state",0);//判断是新建读书笔记还是查看编辑原有的读书笔记
         if(state==1)
         {
-            position=intent.getIntExtra("note_position",0);
+            position=intent.getIntExtra("note_position",0);//获取数据库对应的位置，用以区分图片归属的笔记
         }else
         {
             if(!positions.isEmpty())
@@ -161,11 +162,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if(!edit.equals(""))
         {
-            Pattern pattern=Pattern.compile("/data/data/com.example.jszx.myapplication/files/\\w{9}-\\d{1}");
+            Pattern pattern=Pattern.compile("/data/data/com.example.jszx.myapplication/files/\\w{9}-\\d{1}");//正则表达式，用以匹配存储字符串中的路径
             Matcher matcher=pattern.matcher(edit);
             SpannableString spannableString=new SpannableString(edit);
             while (matcher.find())
             {
+                //匹配到了则还原图片
                 Bitmap bitmap=BitmapFactory.decodeFile(matcher.group());
                 Log.d("MainActivity",matcher.group());
                 bitmap=resizeBitmap(bitmap,1000);
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         editText.setSelection(edit.length());
     }
 
+    //保存相机拍摄图片到app的data目录下，为了区分不同的相片，需要用特定的辨识数区分开。position是要存储在数据库中的
     public void save_picture(Bitmap bitmap)
     {
         FileOutputStream outputStream=null;
@@ -197,8 +200,9 @@ public class MainActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
-    }//contains a path separator
+    }
 
+    //保存图库图片到app的data目录下，为了区分不同的相片，需要用特定的辨识数区分开。position是要存储在数据库中的
     public void save_picture2(Bitmap bitmap)
     {
         FileOutputStream outputStream=null;
@@ -214,15 +218,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public SpannableString decodeImage(String imagePath)
-    {
-        Bitmap bitmap;
-        bitmap=BitmapFactory.decodeFile(imagePath);
-        SpannableString spannableString=new SpannableString(imagePath);
-        ImageSpan imageSpan=new ImageSpan(MainActivity.this,bitmap);
-        spannableString.setSpan(imageSpan,0,imagePath.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannableString;
-    }
     private void insertIntoEditText(SpannableString ss) {
         Editable et=editText.getText();// 先获取Edittext中的内容
         int start = editText.getSelectionStart();

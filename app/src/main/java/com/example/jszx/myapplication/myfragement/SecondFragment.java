@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by 王志杰 on 2017/11/9.
  */
-
+//已完成界面，这里的计划事项和备忘事项的isFinished应该全部为1
 public class SecondFragment extends Fragment{
     @Nullable
     private List<Plan> planList=new ArrayList<>();
@@ -43,12 +43,13 @@ public class SecondFragment extends Fragment{
         View view=inflater.inflate(R.layout.second_fragment,null);
         localBroadcastManager=LocalBroadcastManager.getInstance(this.getActivity());
         RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.second_recyclerview);
-        planList= DataSupport.where("isFinished=? ","1").find(Plan.class);
+        planList= DataSupport.where("isFinished=? ","1").find(Plan.class);//获取isFinished为1的所有事项（如果不是今天的，在未完成界面已经将isFinished全部置0，所以只会查询到今天的已完成事项）
         mainAdapter=new MainAdapter(planList);
         recyclerView.setAdapter(mainAdapter);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(layoutManager);
         refreshLayout=(SwipeRefreshLayout) view.findViewById(R.id.second_refresh);
+        //下拉刷新
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -65,6 +66,7 @@ public class SecondFragment extends Fragment{
         localBroadcastManager.registerReceiver(localReciever,intentFilter);
         return view;
     }
+    //已完成界面上收到未完成界面删除条目发出的广播之后，进行界面更新的操作
     class LocalReciever extends BroadcastReceiver{
         @Override
         public void onReceive(Context context, Intent intent) {

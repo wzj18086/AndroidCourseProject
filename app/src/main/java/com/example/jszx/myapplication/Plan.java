@@ -12,12 +12,12 @@ import java.util.Date;
 public class Plan extends DataSupport{
 
     private int id;
-    private String daedlineTime;
-    private String planContext;
-    private String Weekday;
-    private String planType;
-    private int position;
-    private String isFinished="0";
+    private String daedlineTime;     //计划的截止时间
+    private String planContext;     //计划的内容
+    private String Weekday;         //计划的星期数
+    private String planType;        //计划的种类（为0时为每日计划，为1时为备忘）
+    private int position;           //图片存储中区分不同图片的参数
+    private String isFinished="0";  //计划是否已完成
 
     public String isFinished() {
         return isFinished;

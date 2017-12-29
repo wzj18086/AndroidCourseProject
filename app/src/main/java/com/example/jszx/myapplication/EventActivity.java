@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+//备忘界面
 public class EventActivity extends BaseActivity {
     List<Plan> events=new ArrayList<>();
     EventAdapter eventAdapter;
@@ -32,7 +34,7 @@ public class EventActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
-        events=DataSupport.where("planType=?","1").find(Plan.class);
+        events=DataSupport.where("planType=?","1").find(Plan.class);//找出所有的备忘事项
         eventAdapter=new EventAdapter(events);
 
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar_event);
@@ -131,6 +133,7 @@ public class EventActivity extends BaseActivity {
                 break;
             case R.id.save_data:
                 DataSupport.deleteAll(Plan.class,"planType=?","1");
+                //对更改后的备忘事项进行保存
                 for (int i = 0; i <eventAdapter.getItemCount(); i++) {
                     View view1 = layoutManager.findViewByPosition(i);
                     CardView layout = (CardView) view1;
@@ -142,7 +145,7 @@ public class EventActivity extends BaseActivity {
                     event.setPlanContext(textView_context);
                     event.setDaedlineTime(buttton_context);
                     event.setPlanType("1");
-                    event.setFinished("0");
+                    event.setFinished("0");//默认备忘事项都是未完成的
                     event.save();
                 }
                 Intent intent=new Intent(EventActivity.this,MainActivity.class);

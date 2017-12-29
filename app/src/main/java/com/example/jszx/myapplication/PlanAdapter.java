@@ -48,6 +48,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.plan_item,parent,false);
         final ViewHolder viewHolder=new ViewHolder(view);
 
+        //设置子项点击事件的响应
         viewHolder.timeSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +56,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);
                 int day=calendar.get(Calendar.MINUTE);
+                //计划只需要选择时刻选择框
                 TimePickerDialog timePickerDialog=new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -76,6 +78,8 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
                 final EditText editDialog=(EditText)view.findViewById(R.id.edit_dialog);
                 editDialog.setText(mplanList.get(viewHolder.getAdapterPosition()).getPlanContext());
                 editDialog.setSelection(editDialog.getText().length());
+
+                //计划内容的编辑框的设置
                 AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
                 builder.setTitle("Type your plan")
                         .setView(view)

@@ -48,6 +48,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public EventAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item,parent,false);
         final EventAdapter.ViewHolder viewHolder=new EventAdapter.ViewHolder(view);
+
+        //设置子项的点击事件的响应
         viewHolder.eventTimeSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +60,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 int day=calendar.get(Calendar.DAY_OF_MONTH);
                 int hour=calendar.get(Calendar.HOUR_OF_DAY);
                 int minute=calendar.get(Calendar.MINUTE);
+                //日期选择框，默认选择当前的日期
                 DatePickerDialog datePickerDialog=new DatePickerDialog(view.getContext(),0,new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
@@ -67,6 +70,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                     }
                 },year,month,day);
 
+                //时刻选择框，默认选择当前的时刻
                 TimePickerDialog timePickerDialog=new TimePickerDialog(view.getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -77,7 +81,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
                     }
                 },hour,minute,true);
-                timePickerDialog.show();
+                timePickerDialog.show();//要求时刻选择框先执行show函数，不然会挡住理应先选择的日期选择框
                 datePickerDialog.show();
 
             }
@@ -89,6 +93,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 final EditText editDialog=(EditText)view.findViewById(R.id.edit_dialog);
                 editDialog.setText(EventList.get(viewHolder.getAdapterPosition()).getPlanContext());
                 editDialog.setSelection(editDialog.getText().length());
+
+                //编辑备忘内容对话框的设置
                 AlertDialog.Builder builder=new AlertDialog.Builder(view.getContext());
                 builder.setTitle("Type your plan")
                         .setView(view)
